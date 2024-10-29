@@ -27,9 +27,11 @@ provider "aws" {
       id          = local.id
       workspace   = var.TFC_WORKSPACE_NAME
       last_run_id = var.TFC_RUN_ID
+      fqdn        = var.ATLAS_ADDRESS
     }
   }
 }
+
 
 # values for these variables are automatically populated by the HCP Terraform/Terraform Enterprise run environment 
 # https://developer.hashicorp.com/terraform/cloud-docs/run/run-environment#environment-variables
@@ -50,6 +52,12 @@ variable "TFC_PROJECT_NAME" {
   type = string
 }
 
+
+variable "ATLAS_ADDRESS" {
+  type = string
+}
+
+
 locals {
   id  = split("-", var.TFC_PROJECT_NAME)[0]
   dep = split("-", var.TFC_PROJECT_NAME)[1]
@@ -57,11 +65,21 @@ locals {
 }
 
 resource "aws_vpc" "this" {
-  cidr_block           = "10.0.0.0/16"
+  cidr_block           = var.cidr_block #"10.0.0.0/16"
   enable_dns_hostnames = true
   enable_dns_support   = true
 }
 
+variable "cidr_block" {
+  type    = string
+  default = "10.0.0.0/16"
+}
+
+resource "null_resource" "main" {
+  provisioner "local-exec" {
+    command = "printenv"
+  }
+}
 
 /*
 
