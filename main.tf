@@ -28,7 +28,7 @@ provider "aws" {
       workspace   = var.TFC_WORKSPACE_NAME
       last_run_id = var.TFC_RUN_ID
       fqdn        = var.ATLAS_ADDRESS
-      tfe_id      = local.tfe_id[var.ATLAS_ADDRESS]
+      providedby  = local.tfe_id[var.ATLAS_ADDRESS]
     }
   }
 }
