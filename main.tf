@@ -28,6 +28,7 @@ provider "aws" {
       workspace   = var.TFC_WORKSPACE_NAME
       last_run_id = var.TFC_RUN_ID
       fqdn        = var.ATLAS_ADDRESS
+      tfe_id      = local.tfe_id[var.ATLAS_ADDRESS]
     }
   }
 }
@@ -62,6 +63,11 @@ locals {
   id  = split("-", var.TFC_PROJECT_NAME)[0]
   dep = split("-", var.TFC_PROJECT_NAME)[1]
   env = split("-", var.TFC_PROJECT_NAME)[2]
+  tfe_id = {
+    "https://app.terraform.io"                             = "tfe1"
+    "https://logical-horse.john-weigand.sbx.hashidemos.io" = "tfe2"
+    "https://frank-bream.john-weigand.sbx.hashidemos.io"   = "tfe3"
+  }
 }
 
 resource "aws_vpc" "this" {
